@@ -1,7 +1,10 @@
 const express = require('express');
 const app = express();
-
+const http = require('http');
+const io = require('socket.io');
 const config = {
+  uri: 'www.cert.coder.fi',
+  port: 4000,
   path: '/',
   title: 'Express Status',
   spans: [{
@@ -16,8 +19,9 @@ const config = {
   }]
 }
 
-app.use(require('../index')(config));
+var server = http.createServer(app);
+app.use(require('../index')(config, server));
 
-app.listen(3000, () => {
-  console.log('🌏  http://0.0.0.0:3000');
+server.listen(config.port, config.uri, () => {
+  console.log('🌏  http://'+config.uri+':'+config.port);
 });

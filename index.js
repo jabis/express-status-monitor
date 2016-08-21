@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
 
   const fs = require('fs');
@@ -9,6 +9,8 @@
   let io;
 
   const defaultConfig = {
+    uri: 'www.cert.coder.fi',
+    port: 4000,
     title: 'Express Status',
     path: '/status',
     spans: [{
@@ -60,7 +62,7 @@
     });
   };
 
-  const middlewareWrapper = (config) => {
+  const middlewareWrapper = (config, server) => {
     if (config === null || config === undefined) {
       config = defaultConfig;
     }
@@ -78,18 +80,20 @@
     }
 
     let renderedHtml;
-    fs.readFile(path.join(__dirname, '/index.html'), function(err, html){
+    fs.readFile(path.join(__dirname, '/index.html'), function(err, html) {
       renderedHtml = html.toString().replace(/{{title}}/g, config.title);
     });
 
     return (req, res, next) => {
       if (io === null || io === undefined) {
-
-        io = require('socket.io')(req.socket.server);
+        //console.log(req)
+        io = require('socket.io').listen(server);
 
         io.on('connection', (socket) => {
           socket.emit('start', config.spans);
-          socket.on('change', function() { socket.emit('start', config.spans); });
+          socket.on('change', function() {
+            socket.emit('start', config.spans);
+          });
         });
 
         config.spans.forEach((span) => {

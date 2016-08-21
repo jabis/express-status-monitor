@@ -1,6 +1,6 @@
 {
   "name": "express-status-monitor",
-  "version": "0.0.10",
+  "version": "0.0.10-dev",
   "description": "Realtime Monitoring for Express-based Node applications",
   "main": "app.js",
   "keywords": [
@@ -16,7 +16,13 @@
       "name": "Julien Breux",
       "email": "julien.breux@gmail.com",
       "url": "https://github.com/JulienBreux/"
+    },
+    {
+      "name": "Jabis Sevon",
+      "email": "jabis.is@gmail.com",
+      "url": "https://jscodex.com"
     }
+
   ],
   "repository": {
     "type": "git",
@@ -26,6 +32,6 @@
   "dependencies": {
     "on-headers": "^1.0.1",
     "pidusage": "^1.0.4",
-    "socket.io": "^1.4.8"
+    "socket.io": "^0.9.17"
   }
 }
