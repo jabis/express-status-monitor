@@ -85,11 +85,12 @@
     });
 
     return (req, res, next) => {
-      if (io === null || io === undefined) {
+      if(global.socket) io = global.socket;
+      if (io === null || io === undefined || global.socket === undefined || global.socket === null) {
         //console.log(req)
         io = require('socket.io').listen(server);
-
-        io.on('connection', (socket) => {
+      }
+        io.of(config.path).on('connection', (socket) => {
           socket.emit('start', config.spans);
           socket.on('change', function() {
             socket.emit('start', config.spans);
@@ -101,7 +102,7 @@
           span.responses = [];
           setInterval(() => gatherOsMetrics(io, span), span.interval * 1000);
         });
-      }
+      
 
       const startTime = process.hrtime();
       if (req.path === config.path) {
